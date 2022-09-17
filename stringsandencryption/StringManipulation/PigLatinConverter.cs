@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using AbstractInformation;
+using AbstractRuntimes;
 using Utility;
 
 namespace StringManipulation
@@ -28,12 +29,15 @@ namespace StringManipulation
         /// <summary>
         /// Defines how the application should act during its focus in Main().
         /// </summary>
+        /// <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
         /// <returns>A true if successful. False if not. Or an Exception if thrown.</returns>
-        public override bool Run()
+        public override bool Run(Collector collector)
         {
             try
             {
+                collector.IsEditing = true;
                 this.PigLatinApplication();
+                collector.PublicInfo = this.stringBuilder.ToString();
                 return Input.PromptRepeat();
             }
             catch (Exception ex)

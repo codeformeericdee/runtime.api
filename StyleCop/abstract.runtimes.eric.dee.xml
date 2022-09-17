@@ -9,6 +9,11 @@
             Class for dynamically coded runtimes.
             </summary>
         </member>
+        <member name="F:AbstractInformation.Runtime.isRunning">
+            <summary>
+            Protected means of persisting this variable into subclasses and ensuring that it is used.
+            </summary>
+        </member>
         <member name="M:AbstractInformation.Runtime.#ctor(System.Boolean,System.String)">
             <summary>
             The constructor for the abstract runtime framework.
@@ -16,10 +21,11 @@
             <param name="isRunning">Contains whether the class is set to repeat its calls during the Main() loop.</param>
             <param name="name">The name of the plugin. Should always be set to contain confusion.</param>
         </member>
-        <member name="M:AbstractInformation.Runtime.Run">
+        <member name="M:AbstractInformation.Runtime.Run(AbstractRuntimes.Collector)">
             <summary>
             The abstract and virtual framework method to define what the class should function as during the main loop.
             </summary>
+            <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
             <returns>A true if successful. False if not.</returns>
         </member>
         <member name="M:AbstractInformation.Runtime.OnExit">
@@ -28,18 +34,51 @@
             </summary>
             <returns>A true on completion.</returns>
         </member>
+        <member name="M:AbstractInformation.Runtime.OnExit(AbstractRuntimes.Collector)">
+            <summary>
+            Virtual method for what this class should do upon exiting that uses a collector.
+            </summary>
+            <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
+            <returns>A true on completion.</returns>
+        </member>
         <member name="M:AbstractInformation.Runtime.GetStatus">
             <summary>
             Enumerates the status into status codes.
             </summary>
             <returns>The status code.</returns>
         </member>
-        <member name="M:AbstractInformation.Runtime.RuntimeMain">
+        <member name="M:AbstractInformation.Runtime.RuntimeMain(AbstractRuntimes.Collector)">
             <summary>
             This method should be untouched, as it is the hardcoded function run by the Main() loop.
             Any changes should be made to the virtual run method.
             </summary>
+            <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
             <returns>A true if successful, or a false if failure occurs. If an exception is thrown it is printed and caught.</returns>
+        </member>
+        <member name="T:AbstractRuntimes.Collector">
+            <summary>
+            Singleton class for passing readable strings to the Main() loop.
+            </summary>
+        </member>
+        <member name="M:AbstractRuntimes.Collector.#ctor">
+            <summary>
+            Empty singleton constructor.
+            </summary>
+        </member>
+        <member name="P:AbstractRuntimes.Collector.Instance">
+            <summary>
+            Gets the instance and locks and unlocks the instantiation for thread safety.
+            </summary>
+        </member>
+        <member name="P:AbstractRuntimes.Collector.PublicInfo">
+            <summary>
+            Gets or sets the string allowed for viewing.
+            </summary>
+        </member>
+        <member name="P:AbstractRuntimes.Collector.IsEditing">
+            <summary>
+            Gets or sets a value indicating whether an app has flagged all apps to wait on closing.
+            </summary>
         </member>
         <member name="T:AbstractRuntimes.Program">
             <summary>
@@ -51,6 +90,32 @@
             Substantial loop of the application.
             </summary>
             <param name="args">Default args unused.</param>
+        </member>
+        <member name="T:Encryption.ROT13Cipher">
+            <summary>
+            ROT13 encryptor.
+            </summary>
+        </member>
+        <member name="M:Encryption.ROT13Cipher.#ctor(System.Boolean,System.String)">
+            <summary>
+            Initialization settings for the ROT13 cipher.
+            </summary>
+            <param name="isRunning">Should the runtime be started with the application.</param>
+            <param name="name">What is the name of the runtime.</param>
+        </member>
+        <member name="M:Encryption.ROT13Cipher.Run(AbstractRuntimes.Collector)">
+            <summary>
+            The definition of how the cipher should act during the Main() loop.
+            </summary>
+            <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
+            <returns>A true upon succes.</returns>
+        </member>
+        <member name="M:Encryption.ROT13Cipher.OnExit(AbstractRuntimes.Collector)">
+            <summary>
+            Overrides the exit function to check if the collector is being edited.
+            </summary>
+            <param name="collector">The singleton storing state.</param>
+            <returns>A value indicating the result of the exit.</returns>
         </member>
         <member name="T:StringManipulation.PigLatinConverter">
             <summary>
@@ -69,10 +134,11 @@
             <param name="isRunning">Whether the converter should start with the application or not.</param>
             <param name="name">The name for the runtime (converter) for logging.</param>
         </member>
-        <member name="M:StringManipulation.PigLatinConverter.Run">
+        <member name="M:StringManipulation.PigLatinConverter.Run(AbstractRuntimes.Collector)">
             <summary>
             Defines how the application should act during its focus in Main().
             </summary>
+            <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
             <returns>A true if successful. False if not. Or an Exception if thrown.</returns>
         </member>
         <member name="T:Utility.Input">
@@ -83,6 +149,12 @@
         <member name="M:Utility.Input.Out(System.String)">
             <summary>
             Displays a string to the console.
+            </summary>
+            <param name="stringToDisplay">The string to display.</param>
+        </member>
+        <member name="M:Utility.Input.OutBlank">
+            <summary>
+            Displays a new line to the console.
             </summary>
             <param name="stringToDisplay">The string to display.</param>
         </member>

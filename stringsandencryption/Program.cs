@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AbstractInformation;
+using Encryption;
 using StringManipulation;
 
 namespace AbstractRuntimes
@@ -13,6 +14,7 @@ namespace AbstractRuntimes
     {
         private static bool hasWork = true;
         private static List<Runtime> runtimes = new List<Runtime>();
+        private static Collector collector = new Collector();
 
         /// <summary>
         /// Substantial loop of the application.
@@ -20,14 +22,17 @@ namespace AbstractRuntimes
         /// <param name="args">Default args unused.</param>
         private static void Main(string[] args)
         {
+            Console.SetWindowSize(100, 42);
             PigLatinConverter pigLatinConverter = new PigLatinConverter(true, "Pig Latin Converter");
+            ROT13Cipher rot13Cipher = new ROT13Cipher(true, "ROT13 Cipher");
             runtimes.Add(pigLatinConverter);
+            runtimes.Add(rot13Cipher);
 
             while (hasWork)
             {
                 runtimes.ForEach(runtime =>
                 {
-                    runtime.RuntimeMain();
+                    bool complete = runtime.GetStatus() == 1 ? runtime.RuntimeMain(collector) : true;
                 });
 
                 hasWork = runtimes.Any(runtime => runtime.GetStatus() == 1);

@@ -17,6 +17,15 @@ namespace Utility
         }
 
         /// <summary>
+        /// Displays a new line to the console.
+        /// </summary>
+        /// <param name="stringToDisplay">The string to display.</param>
+        public static void OutBlank()
+        {
+            Console.WriteLine();
+        }
+
+        /// <summary>
         /// Reads a string from the console.
         /// </summary>
         /// <returns>The string which has been read from the user.</returns>

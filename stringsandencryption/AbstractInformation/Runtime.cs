@@ -1,4 +1,5 @@
 ﻿using System;
+using AbstractRuntimes;
 
 namespace AbstractInformation
 {
@@ -7,7 +8,13 @@ namespace AbstractInformation
     /// </summary>
     public abstract class Runtime
     {
-        private bool isRunning;
+        /// <summary>
+        /// Protected means of persisting this variable into subclasses and ensuring that it is used.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
+        protected bool isRunning;
+#pragma warning restore SA1401 // Fields should be private
+
         private string name;
 
         /// <summary>
@@ -24,8 +31,9 @@ namespace AbstractInformation
         /// <summary>
         /// The abstract and virtual framework method to define what the class should function as during the main loop.
         /// </summary>
+        /// <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
         /// <returns>A true if successful. False if not.</returns>
-        public abstract bool Run();
+        public abstract bool Run(Collector collector);
 
         /// <summary>
         /// Virtual method for what this class should do upon exiting.
@@ -33,10 +41,25 @@ namespace AbstractInformation
         /// <returns>A true on completion.</returns>
         public virtual bool OnExit()
         {
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"================ {this.name} is exiting ================");
             Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n================ {this.name} is exiting ================");
+            Console.ResetColor();
+            return true;
+        }
+
+        /// <summary>
+        /// Virtual method for what this class should do upon exiting that uses a collector.
+        /// </summary>
+        /// <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
+        /// <returns>A true on completion.</returns>
+        public virtual bool OnExit(Collector collector)
+        {
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n================ {this.name} is exiting ================");
+            Console.ResetColor();
+            collector.IsEditing = false;
             return true;
         }
 
@@ -59,23 +82,25 @@ namespace AbstractInformation
         /// This method should be untouched, as it is the hardcoded function run by the Main() loop.
         /// Any changes should be made to the virtual run method.
         /// </summary>
+        /// <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
         /// <returns>A true if successful, or a false if failure occurs. If an exception is thrown it is printed and caught.</returns>
-        public bool RuntimeMain()
+        public bool RuntimeMain(Collector collector)
         {
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"================ {this.name} is running ================");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\n================ {this.name} is running ================");
             Console.ResetColor();
 
             try
             {
-                switch (this.Run())
+                switch (this.Run(collector))
                 {
                     case true:
+                        collector.IsEditing = true;
                         return true;
                     default:
                         this.isRunning = false;
-                        this.OnExit();
+                        this.OnExit(collector);
                         return false;
                 }
             }
