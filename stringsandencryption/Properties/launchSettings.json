@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    },
+    "abstract.runtimes.eric.dee": {
+      "commandName": "Project"
+    }
+  }
+}

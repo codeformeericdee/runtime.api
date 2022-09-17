@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>abstract.runtimes.eric.dee</name>
+    </assembly>
+    <members>
+        <member name="T:AbstractInformation.Runtime">
+            <summary>
+            Class for dynamically coded runtimes.
+            </summary>
+        </member>
+        <member name="M:AbstractInformation.Runtime.#ctor(System.Boolean,System.String)">
+            <summary>
+            The constructor for the abstract runtime framework.
+            </summary>
+            <param name="isRunning">Contains whether the class is set to repeat its calls during the Main() loop.</param>
+            <param name="name">The name of the plugin. Should always be set to contain confusion.</param>
+        </member>
+        <member name="M:AbstractInformation.Runtime.Run">
+            <summary>
+            The abstract and virtual framework method to define what the class should function as during the main loop.
+            </summary>
+            <returns>A true if successful. False if not.</returns>
+        </member>
+        <member name="M:AbstractInformation.Runtime.OnExit">
+            <summary>
+            Virtual method for what this class should do upon exiting.
+            </summary>
+            <returns>A true on completion.</returns>
+        </member>
+        <member name="M:AbstractInformation.Runtime.GetStatus">
+            <summary>
+            Enumerates the status into status codes.
+            </summary>
+            <returns>The status code.</returns>
+        </member>
+        <member name="M:AbstractInformation.Runtime.RuntimeMain">
+            <summary>
+            This method should be untouched, as it is the hardcoded function run by the Main() loop.
+            Any changes should be made to the virtual run method.
+            </summary>
+            <returns>A true if successful, or a false if failure occurs. If an exception is thrown it is printed and caught.</returns>
+        </member>
+        <member name="T:AbstractRuntimes.Program">
+            <summary>
+            The entry point to the application.
+            </summary>
+        </member>
+        <member name="M:AbstractRuntimes.Program.Main(System.String[])">
+            <summary>
+            Substantial loop of the application.
+            </summary>
+            <param name="args">Default args unused.</param>
+        </member>
+        <member name="T:StringManipulation.PigLatinConverter">
+            <summary>
+            A converter which implements a continuous runtime abstract base class that will display user inputs in pig latin.
+            </summary>
+        </member>
+        <member name="F:StringManipulation.PigLatinConverter.stringBuilder">
+            <summary>
+            A generic string manipulation class.
+            </summary>
+        </member>
+        <member name="M:StringManipulation.PigLatinConverter.#ctor(System.Boolean,System.String)">
+            <summary>
+            Class constructor.
+            </summary>
+            <param name="isRunning">Whether the converter should start with the application or not.</param>
+            <param name="name">The name for the runtime (converter) for logging.</param>
+        </member>
+        <member name="M:StringManipulation.PigLatinConverter.Run">
+            <summary>
+            Defines how the application should act during its focus in Main().
+            </summary>
+            <returns>A true if successful. False if not. Or an Exception if thrown.</returns>
+        </member>
+        <member name="T:Utility.Input">
+            <summary>
+            An input utility class for reading and displaying lines.
+            </summary>
+        </member>
+        <member name="M:Utility.Input.Out(System.String)">
+            <summary>
+            Displays a string to the console.
+            </summary>
+            <param name="stringToDisplay">The string to display.</param>
+        </member>
+        <member name="M:Utility.Input.In">
+            <summary>
+            Reads a string from the console.
+            </summary>
+            <returns>The string which has been read from the user.</returns>
+        </member>
+        <member name="M:Utility.Input.PromptRepeat">
+            <summary>
+            A default display for input from the user.
+            </summary>
+            <returns>A bool on success with a valid character.</returns>
+        </member>
+        <member name="M:Utility.Input.ValidateStringLength(System.String)">
+            <summary>
+            Validates string is active by checking its length.
+            </summary>
+            <param name="stringToValidate">The string to check.</param>
+            <returns>A true if the string has content, or a false if it does not.</returns>
+        </member>
+        <member name="M:Utility.Input.EnforceYesOrNoInput(System.String)">
+            <summary>
+            Enforces that an input has been given a correct yes or no character.
+            </summary>
+            <param name="inputToValidate">The string to validate.</param>
+            <returns>The same string if it is valid, or repeats until the user enters a valid string and returns it.</returns>
+        </member>
+        <member name="M:Utility.Input.PassOrFailString(System.Boolean)">
+            <summary>
+            A wrapper method for failing input via exception.
+            </summary>
+            <param name="item">The method to gather a response from.</param>
+            <returns>A true if it passes, or throws an exception if it fails.</returns>
+            <exception cref="T:System.Exception">Generic exception type with a basic failure message to display.</exception>
+        </member>
+    </members>
+</doc>
