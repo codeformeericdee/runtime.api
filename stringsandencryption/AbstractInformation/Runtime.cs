@@ -9,11 +9,9 @@ namespace AbstractInformation
     public abstract class Runtime
     {
         /// <summary>
-        /// Protected means of persisting this variable into subclasses and ensuring that it is used.
+        /// The status of the runtime which the Main() loop uses to determine whether to call the RuntimeMain method.
         /// </summary>
-#pragma warning disable SA1401 // Fields should be private
-        protected bool isRunning;
-#pragma warning restore SA1401 // Fields should be private
+        private bool isRunning;
 
         private string name;
 
@@ -45,6 +43,7 @@ namespace AbstractInformation
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\n================ {this.name} is exiting ================");
             Console.ResetColor();
+            this.isRunning = false;
             return true;
         }
 
@@ -56,11 +55,33 @@ namespace AbstractInformation
         public virtual bool OnExit(Collector collector)
         {
             Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n================ {this.name} is exiting ================");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"\n================ {this.name} is done editing ================");
             Console.ResetColor();
             collector.IsEditing = false;
-            return true;
+            return this.OnExit();
+        }
+
+        /// <summary>
+        /// Allows the plugin to always exit after use.
+        /// Useful for plugins that only act if editing is occurring (Responder vs Updater).
+        /// It also allows the privatization of the isRunning member.
+        /// </summary>
+        /// <param name="collector">The psuedo namespace for collective data.</param>
+        /// <returns>A true or false depending on the exit functions override status and implementation.</returns>
+        public bool FollowEdits(Collector collector)
+        {
+            bool result;
+            if (collector.IsEditing)
+            {
+                result = this.isRunning = true;
+            }
+            else
+            {
+                result = this.OnExit();
+            }
+
+            return result;
         }
 
         /// <summary>

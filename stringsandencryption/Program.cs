@@ -38,7 +38,7 @@ namespace AbstractRuntimes
                 hasWork = runtimes.Any(runtime => runtime.GetStatus() == 1);
             }
 
-            Console.WriteLine("\n\n\nPress the enter key to terminate the application.");
+            Console.WriteLine("\n\n\n\nPress the enter key to terminate the application.");
             Console.Read();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using AbstractInformation;
 using AbstractRuntimes;
@@ -47,19 +48,34 @@ namespace StringManipulation
             }
         }
 
-        private StringBuilder ConvertStringToPigLatin(string stringToConvert)
+        private StringBuilder ReplaceSubstringWithPigLatin(string originalString)
         {
-            char first = stringToConvert[0];
-            StringBuilder stringBuilder = new StringBuilder(stringToConvert, stringToConvert.Length);
-            stringBuilder.Remove(0, 1);
-            stringBuilder.Append(char.ToLower(first) + "ay");
+            string removal = Input.RemoveAtAny(ref originalString, "aeiouAEIOU");
+            StringBuilder stringBuilder = new StringBuilder(originalString, originalString.Length);
+            stringBuilder.Append(removal.ToLower() + "ay");
+            return stringBuilder;
+        }
+
+        private StringBuilder AppendString(string originalString, string stringToAppend)
+        {
+            StringBuilder stringBuilder = new StringBuilder(originalString, originalString.Length);
+            stringBuilder.Append(stringToAppend);
             return stringBuilder;
         }
 
         private bool AssignString(string sentenceToTranslate)
         {
-            this.stringBuilder = this.ConvertStringToPigLatin(sentenceToTranslate);
-            Input.Out("\nYour sentence has been translated: ");
+            switch (Input.StartsWithAny(sentenceToTranslate, "aeiouAEIOU"))
+            {
+                case true:
+                    this.stringBuilder = this.AppendString(sentenceToTranslate, "way");
+                    break;
+                default:
+                    this.stringBuilder = this.ReplaceSubstringWithPigLatin(sentenceToTranslate);
+                    break;
+            }
+
+            Input.Out("Your sentence has been translated: \n");
             Input.Out(this.stringBuilder + "\n");
             return true;
         }
@@ -69,6 +85,7 @@ namespace StringManipulation
             Input.Out("Welcome to pig latin maker. Please type a sentence and it will become translated.\n");
             Input.Out("================");
             string sentenceToTranslate = Input.In();
+            Input.OutBlankLine();
             return Input.PassOrFailString(Input.ValidateStringLength(sentenceToTranslate)) ? this.AssignString(sentenceToTranslate) : false;
         }
     }

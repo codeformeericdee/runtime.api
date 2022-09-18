@@ -11,7 +11,7 @@
         </member>
         <member name="F:AbstractInformation.Runtime.isRunning">
             <summary>
-            Protected means of persisting this variable into subclasses and ensuring that it is used.
+            The status of the runtime which the Main() loop uses to determine whether to call the RuntimeMain method.
             </summary>
         </member>
         <member name="M:AbstractInformation.Runtime.#ctor(System.Boolean,System.String)">
@@ -40,6 +40,15 @@
             </summary>
             <param name="collector">A framework dedicated singleton that acts as a pseudo namespace.</param>
             <returns>A true on completion.</returns>
+        </member>
+        <member name="M:AbstractInformation.Runtime.FollowEdits(AbstractRuntimes.Collector)">
+            <summary>
+            Allows the plugin to always exit after use.
+            Useful for plugins that only act if editing is occurring (Responder vs Updater).
+            It also allows the privatization of the isRunning member.
+            </summary>
+            <param name="collector">The psuedo namespace for collective data.</param>
+            <returns>A true or false depending on the exit functions override status and implementation.</returns>
         </member>
         <member name="M:AbstractInformation.Runtime.GetStatus">
             <summary>
@@ -152,7 +161,7 @@
             </summary>
             <param name="stringToDisplay">The string to display.</param>
         </member>
-        <member name="M:Utility.Input.OutBlank">
+        <member name="M:Utility.Input.OutBlankLine">
             <summary>
             Displays a new line to the console.
             </summary>
@@ -191,6 +200,30 @@
             <param name="item">The method to gather a response from.</param>
             <returns>A true if it passes, or throws an exception if it fails.</returns>
             <exception cref="T:System.Exception">Generic exception type with a basic failure message to display.</exception>
+        </member>
+        <member name="M:Utility.Input.StartsWithAny(System.String,System.String)">
+            <summary>
+            Checks if a string contains any of the leetters in the concurrent string.
+            </summary>
+            <param name="stringToCheck">The string to compare.</param>
+            <param name="charactersToCheck">The letters to check for at the beginning.</param>
+            <returns>True if the comparable string starts with one of the letters.</returns>
+        </member>
+        <member name="M:Utility.Input.RemoveAtAny(System.String@,System.String)">
+            <summary>
+            Removes the substring leading up to either of the trigger values.
+            </summary>
+            <param name="stringToCheck">The string to alter.</param>
+            <param name="charactersToTrigger">The characters to trigger the cut.</param>
+            <returns>The cut substring.</returns>
+        </member>
+        <member name="M:Utility.Input.AppendString(System.String,System.String)">
+            <summary>
+            Appends a string to another string safely.
+            </summary>
+            <param name="originalString">The string to add onto.</param>
+            <param name="stringToAppend">The string to be added.</param>
+            <returns>The new string with both items together.</returns>
         </member>
     </members>
 </doc>

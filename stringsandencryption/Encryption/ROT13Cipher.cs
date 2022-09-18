@@ -31,10 +31,16 @@ namespace Encryption
         /// <returns>A true upon succes.</returns>
         public override bool Run(Collector collector)
         {
-            Input.Out("The original string is as follows: " + collector.PublicInfo + "\n");
-            this.SetAsByteList(collector.PublicInfo);
-            this.ROT13CipherApplication();
-            return false;
+            try
+            {
+                return collector.PublicInfo == null ? false
+                    : this.SetAsByteList(collector.PublicInfo) ? this.ROT13CipherApplication() : false;
+            }
+            catch (Exception ex)
+            {
+                Input.Out("Error encoding to ROT13.\n" + ex.Message.ToString());
+                return false;
+            }
         }
 
         /// <summary>
@@ -44,54 +50,52 @@ namespace Encryption
         /// <returns>A value indicating the result of the exit.</returns>
         public override bool OnExit(Collector collector)
         {
-            bool result;
-#pragma warning disable SA1100 // Do not prefix calls with base unless local implementation exists
-            if (collector.IsEditing)
-            {
-                result = base.OnExit();
-                this.isRunning = true;
-            }
-            else
-            {
-                result = base.OnExit();
-            }
-
-            return result;
-#pragma warning restore SA1100 // Do not prefix calls with base unless local implementation exists
+            return this.FollowEdits(collector);
         }
 
         private bool ROT13CipherApplication()
         {
-            this.DisplayByteList();
-            this.EncodeRotate13();
-            this.DisplayByteList();
-            this.DisplayStringList();
-            return true;
-        }
+            bool result = false;
 
-        private void SetAsByteList(string arrayToAdd)
-        {
-            this.cipherValue.Clear();
-            char[] tempArray = arrayToAdd.ToCharArray();
-
-            for (int i = 0; i < tempArray.Length; i++)
+            if (this.cipherValue.Count > 0)
             {
-                this.cipherValue.Add((byte)tempArray[i]);
+                if (result = this.EncodeRotate13())
+                {
+                    Input.Out("The new collective string:\n");
+                }
             }
-        }
 
-        private void DisplayByteList()
-        {
-            Input.Out("The string in decimal codes:");
-            this.cipherValue.ForEach(n =>
+            if (result)
             {
-                Console.Write(n.ToString() + ", ");
-            });
+                this.DisplayByteList();
+                this.DisplayStringList();
+            }
+
+            // Should always close after running
+            return false;
         }
 
-        private void EncodeRotate13()
+        private bool SetAsByteList(string arrayToAdd)
         {
-            Input.Out("\n\nRotating the string....\n");
+            if (arrayToAdd != null)
+            {
+                this.cipherValue.Clear();
+                char[] tempArray = arrayToAdd.ToCharArray();
+
+                for (int i = 0; i < tempArray.Length; i++)
+                {
+                    this.cipherValue.Add((byte)tempArray[i]);
+                }
+            }
+
+            return this.cipherValue.Count > 0 ? true : false;
+        }
+
+        private bool EncodeRotate13()
+        {
+            Input.Out("Rotating the string....\n");
+
+            int first = this.cipherValue[0];
 
             for (int i = 0; i < this.cipherValue.Count; i++)
             {
@@ -107,11 +111,21 @@ namespace Encryption
 
                 this.cipherValue[i] = n;
             }
+
+            return first == this.cipherValue[0] ? false : true;
+        }
+
+        private void DisplayByteList()
+        {
+            this.cipherValue.ForEach(n =>
+            {
+                Console.Write(n.ToString() + ", ");
+            });
+            Input.OutBlankLine();
         }
 
         private void DisplayStringList()
         {
-            Input.Out("\n\nThe string having been rotated by 13 places up or down:");
             Input.Out(System.Text.Encoding.UTF8.GetString(this.cipherValue.ToArray()));
         }
     }

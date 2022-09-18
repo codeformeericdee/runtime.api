@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Utility
 {
@@ -20,7 +21,7 @@ namespace Utility
         /// Displays a new line to the console.
         /// </summary>
         /// <param name="stringToDisplay">The string to display.</param>
-        public static void OutBlank()
+        public static void OutBlankLine()
         {
             Console.WriteLine();
         }
@@ -40,7 +41,7 @@ namespace Utility
         /// <returns>A bool on success with a valid character.</returns>
         public static bool PromptRepeat()
         {
-            Console.WriteLine("\nTranslate again? (y/n)");
+            Console.WriteLine("Translate again? (y/n)\n");
             string restart = EnforceYesOrNoInput(Console.ReadLine());
             Console.WriteLine();
             return restart.ToLower() == "y" ? true : false;
@@ -76,7 +77,7 @@ namespace Utility
             }
             else
             {
-                Console.WriteLine("Please enter a character. (y or n)");
+                Console.WriteLine("Please enter a character. (y or n)\n");
                 inputToValidate = Console.ReadLine();
                 return EnforceYesOrNoInput(inputToValidate);
             }
@@ -96,8 +97,95 @@ namespace Utility
             }
             else
             {
-                throw new Exception("This string is invalid.");
+                throw new Exception("This string is invalid.\n");
             }
+        }
+
+        /// <summary>
+        /// Checks if a string contains any of the leetters in the concurrent string.
+        /// </summary>
+        /// <param name="stringToCheck">The string to compare.</param>
+        /// <param name="charactersToCheck">The letters to check for at the beginning.</param>
+        /// <returns>True if the comparable string starts with one of the letters.</returns>
+        public static bool StartsWithAny(string stringToCheck, string charactersToCheck)
+        {
+            char[] vowels = charactersToCheck.ToCharArray();
+            int instructionPointer = 0;
+
+            for (int sourceIndex = 0; sourceIndex < stringToCheck.Length; sourceIndex++)
+            {
+                if (sourceIndex - instructionPointer != 0)
+                {
+                    break;
+                }
+
+                for (int vowelIndex = 0; vowelIndex < vowels.Length; vowelIndex++)
+                {
+                    if (stringToCheck[sourceIndex] == vowels[vowelIndex])
+                    {
+                        instructionPointer++;
+                        break;
+                    }
+                }
+            }
+
+            return instructionPointer == 0 ? false : true;
+        }
+
+        /// <summary>
+        /// Removes the substring leading up to either of the trigger values.
+        /// </summary>
+        /// <param name="stringToCheck">The string to alter.</param>
+        /// <param name="charactersToTrigger">The characters to trigger the cut.</param>
+        /// <returns>The cut substring.</returns>
+        public static string RemoveAtAny(ref string stringToCheck, string charactersToTrigger)
+        {
+            char[] vowels = charactersToTrigger.ToCharArray();
+            int sourceIndex = 0;
+            int instructionPointer = 0;
+
+            for (sourceIndex = 0; sourceIndex < stringToCheck.Length; sourceIndex++)
+            {
+                for (int vowelIndex = 0; vowelIndex < vowels.Length; vowelIndex++)
+                {
+                    if (stringToCheck[sourceIndex] == vowels[vowelIndex])
+                    {
+                        instructionPointer++;
+                        break;
+                    }
+                }
+
+                if (instructionPointer != 0)
+                {
+                    break;
+                }
+            }
+
+            char[] removal = new char[sourceIndex];
+
+            for (int i = 0; i < sourceIndex; i++)
+            {
+                removal[i] = stringToCheck[i];
+            }
+
+            StringBuilder newString = new StringBuilder(stringToCheck, stringToCheck.Length);
+            newString.Remove(0, sourceIndex);
+            stringToCheck = newString.ToString();
+
+            return string.Concat(removal);
+        }
+
+        /// <summary>
+        /// Appends a string to another string safely.
+        /// </summary>
+        /// <param name="originalString">The string to add onto.</param>
+        /// <param name="stringToAppend">The string to be added.</param>
+        /// <returns>The new string with both items together.</returns>
+        public static string AppendString(string originalString, string stringToAppend)
+        {
+            StringBuilder stringBuilder = new StringBuilder(originalString, originalString.Length);
+            stringBuilder.Append(stringToAppend);
+            return stringBuilder.ToString();
         }
     }
 }
