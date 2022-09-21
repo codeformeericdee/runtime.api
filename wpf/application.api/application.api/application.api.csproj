@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ux\images\oits.png" />
+    <None Remove="ux\images\oitsclean.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ux\core\" />
+    <Folder Include="ux\fonts\" />
+    <Folder Include="ux\mvvm\model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ux\images\oits.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ux\images\oitsclean.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
