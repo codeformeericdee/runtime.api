@@ -13,7 +13,6 @@ ConsoleApplication.ApplicationEntryLocation(new string[] {"Startup"});
 
 internal class ConsoleApplication
 {
-    private static bool takingInput = true;
     private static bool hasWork = true;
     private static List<Runtime> runtimes = new List<Runtime>();
     private static CommunalMemory communalMemory = new CommunalMemory();

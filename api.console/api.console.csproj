@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\applications\application.csproj" />
+    <ProjectReference Include="..\application\application.csproj" />
     <ProjectReference Include="..\runtime\runtime.csproj" />
   </ItemGroup>
 
