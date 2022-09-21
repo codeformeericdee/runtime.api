@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AbstractRuntimes
+﻿namespace Implementation
 {
     /// <summary>
     /// Singleton class for passing readable strings to the Main() loop.

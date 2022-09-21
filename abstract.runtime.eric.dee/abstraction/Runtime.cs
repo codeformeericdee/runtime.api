@@ -1,7 +1,7 @@
 ﻿using System;
-using AbstractRuntimes;
+using Implementation;
 
-namespace AbstractInformation
+namespace Abstraction
 {
     /// <summary>
     /// Class for dynamically coded runtimes.

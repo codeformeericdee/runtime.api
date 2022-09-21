@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>abstract.runtimes.eric.dee</ActiveDebugProfile>
+    <ActiveDebugProfile>runtime.api</ActiveDebugProfile>
   </PropertyGroup>
 </Project>

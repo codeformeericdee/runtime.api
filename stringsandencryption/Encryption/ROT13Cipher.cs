@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AbstractInformation;
-using AbstractRuntimes;
+using Abstraction;
+using Implementation;
 using Utility;
 
 namespace Encryption

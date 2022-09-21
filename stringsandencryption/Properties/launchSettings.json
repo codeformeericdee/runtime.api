@@ -5,7 +5,7 @@
       "environmentVariables": {},
       "distributionName": ""
     },
-    "abstract.runtimes.eric.dee": {
+    "runtime.api": {
       "commandName": "Project"
     }
   }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AbstractInformation;
+using Abstraction;
 using Encryption;
+using Implementation;
 using StringManipulation;
 
 namespace AbstractRuntimes

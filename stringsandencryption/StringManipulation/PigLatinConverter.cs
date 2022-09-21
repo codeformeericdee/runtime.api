@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using AbstractInformation;
+using Abstraction;
 using AbstractRuntimes;
+using Implementation;
 using Utility;
 
 namespace StringManipulation

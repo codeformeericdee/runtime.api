@@ -13,6 +13,10 @@
     </PackageReference>
     <AdditionalFiles Include="..\StyleCop\ProgrammingConcepts.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\abstract.runtime.eric.dee\abstract.runtime.eric.dee.csproj" />
+  </ItemGroup>
   
   <PropertyGroup>
     <DocumentationFile>..\StyleCop\$(AssemblyName).xml</DocumentationFile>
