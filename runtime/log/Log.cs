@@ -289,7 +289,7 @@ namespace Application
                 Log.Out($"!{new string(nOfString)}");
             });
             Console.ForegroundColor = ConsoleColor.Black;
-            Log.Out("Example: My name is Eric !p !rot13 translates and encrypts the sentence.");
+            Log.Out("Example: My name is Eric !piglatin !rot13 translates and encrypts the sentence.");
             Console.ResetColor();
         }
 
