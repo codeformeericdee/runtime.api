@@ -2,31 +2,29 @@
 using Abstract;
 using Singular;
 
-namespace Applications
+namespace Application
 {
     public class PigLatin : Runtime
     {
-        private StringBuilder stringBuilder;
+        private StringBuilder? stringBuilder;
 
-        public PigLatin(string name, bool isRunning)
-            : base(name, isRunning)
-        {
-            this.stringBuilder = new StringBuilder();
-        }
+        public PigLatin(string name, bool isRunning, char[]? command=null)
+            : base(name, isRunning, command)
+        {}
 
         public override bool Run(CommunalMemory communalMemory)
         {
             try
             {
                 this.PigLatinApplication(communalMemory);
+                if (this.stringBuilder != null)
                 communalMemory.ModifyContent(this.stringBuilder.ToString(), this);
                 return true;
             }
             catch (Exception ex)
             {
                 Log.Out("Error converting string to pig latin.\n" + ex.Message.ToString());
-                Log.Out("Translate another sentence?");
-                return Log.RequestInputCharacters("y/n");
+                return false;
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using Abstract;
-using Applications;
+using Application;
 
 namespace Singular
 {

@@ -6,11 +6,21 @@ namespace Abstract
     {
         private string name;
         private bool isRunning;
+        private char[]? hasCommand;
+        private Action? hasMethod;
 
-        public Runtime(string name, bool isRunning)
+        public Runtime(string name, bool isRunning, char[]? command=null)
         {
             this.isRunning = isRunning;
             this.name = name;
+            this.hasCommand = command;
+            if (this.hasCommand != null) this.hasMethod = this.Start;
+            else this.hasMethod = null;
+        }
+
+        protected void Start()
+        {
+            this.isRunning = true;
         }
 
         public abstract bool Run(CommunalMemory communalMemory);
@@ -32,6 +42,12 @@ namespace Abstract
             Console.WriteLine($"\n================ {this.name} is done editing ================");
             Console.ResetColor();
             return invertBehavior ? this.OnExit() : true;
+        }
+
+        public Action? GetCommandCompatibility(out char[]? command)
+        {
+            command = this.hasCommand;
+            return this.hasMethod;
         }
 
         public bool AdhereToCommunalStatus(CommunalMemory communalMemory)

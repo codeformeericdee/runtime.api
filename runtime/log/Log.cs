@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace Applications
+namespace Application
 {
     public static class Log
     {
@@ -62,15 +62,18 @@ namespace Applications
             }
         }
 
-        public static void DisplayByteListAsString(List<byte> listToDisplay)
+        public static void DisplayByteListAsString(List<byte>? listToDisplay)
         {
-            switch (consoleAvailability)
+            if (listToDisplay != null)
             {
-                case true:
-                    Out(System.Text.Encoding.UTF8.GetString(listToDisplay.ToArray()));
-                    return;
-                default:
-                    return;
+                switch (consoleAvailability)
+                {
+                    case true:
+                        Out(System.Text.Encoding.UTF8.GetString(listToDisplay.ToArray()));
+                        return;
+                    default:
+                        return;
+                }
             }
         }
 
@@ -87,18 +90,20 @@ namespace Applications
             }
             else
             {
-                throw new Exception("This string is invalid.\n");
+                throw new Exception("This string is invalid.");
             }
         }
 
-        public static bool RequestInputCharacters(string charactersNeeded)
+        public static bool EnforceInputCharacters(string charactersNeeded, out string? resultingInput)
         {
+            resultingInput = string.Empty;
             switch (consoleAvailability)
             {
                 case true:
                     Console.WriteLine(charactersNeeded + "\n");
-                    string restart = EnforceCharacters(Console.ReadLine(), charactersNeeded);
-                    return restart.ToLower() == "y" ? true : false;
+                    resultingInput = Console.ReadLine();
+                    resultingInput = EnforceCharacters(resultingInput, charactersNeeded);
+                    return resultingInput.ToLower().Contains(charactersNeeded) ? true : false;
                 default:
                     return false;
             }
@@ -114,7 +119,7 @@ namespace Applications
                 }
                 else
                 {
-                    Console.WriteLine($"Please enter a character. {inputToEnforce}\n");
+                    Console.WriteLine($"Please enter a character. {charactersNeeded}\n");
                     inputToEnforce = Console.ReadLine();
                 }
             }
@@ -186,6 +191,38 @@ namespace Applications
             return string.Concat(removal);
         }
 
+        public static bool DecoupleByteList(out List<byte>?outPutString, List<byte>? originalString, int separator)
+        {
+            outPutString = null;
+            bool found = false;
+            if (originalString != null)
+            {
+                List<byte> temporaryString = new List<byte>();
+                int sourceIndex;
+                for (sourceIndex = 0; sourceIndex < originalString.Count; sourceIndex++)
+                {
+                    if (originalString[sourceIndex] != separator)
+                    {
+                        temporaryString.Add(originalString[sourceIndex]);
+                    }
+                    else
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    sourceIndex++;
+                    originalString.RemoveRange(0, sourceIndex);
+                    outPutString = temporaryString;
+                    return true;
+                }
+                else return true;
+            }
+            else return false;
+        }
+
         public static string AppendToString(string originalString, string stringToAppend)
         {
             StringBuilder stringBuilder = new StringBuilder(originalString, originalString.Length);
@@ -228,6 +265,41 @@ namespace Applications
             {
                 return false;
             }
+        }
+
+        public static byte[] ConvertCharArrayToByteArray(char[] arrayToChange)
+        {
+            return new System.Text.UTF8Encoding(true).GetBytes(arrayToChange);
+        }
+
+        public static List<byte> ConvertCharArrayToByteList(char[] arrayToChange)
+        {
+            byte[] byteArray = ConvertCharArrayToByteArray(arrayToChange);
+            return new List<byte>(byteArray);
+        }
+
+        public static void DisplayStartupString(List<char[]> defaults)
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Log.Out("Enter a sentence and follow it with flags to translate or encode it.");
+            Log.Out("These flags exist:");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            defaults.ForEach(nOfString => {
+                Log.Out($"!{new string(nOfString)}");
+            });
+            Console.ForegroundColor = ConsoleColor.Black;
+            Log.Out("Example: My name is Eric !p !rot13 translates and encrypts the sentence.");
+            Console.ResetColor();
+        }
+
+        public static void DisplayExitString()
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Press the enter key to end the application.");
+            Console.ResetColor();
+            Console.Read();
         }
     }
 }

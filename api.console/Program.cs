@@ -1,6 +1,5 @@
 ﻿using Abstract;
 using Application;
-using Applications;
 using Encryption;
 using Singular;
 
@@ -19,45 +18,45 @@ internal class ConsoleApplication
 
     public static void ApplicationEntryLocation(string[] args)
     {
+        char[] pigLatinCommand = { 'p', 'i', 'g', 'l', 'a', 't', 'i', 'n' };
+        char[] rot13Command = { 'r', 'o', 't', '1', '3' };
+
         UserInterface userInterface = new UserInterface("Console input", true);
-        PigLatin pigLatin = new PigLatin("Pig latin converter", true);
-        ROT13Cipher rot13Cipher = new ROT13Cipher("ROT13 cipher", true);
+        Link link = new Link("Instruction parser", true);
+        PigLatin pigLatin = new PigLatin("Pig latin converter", false, pigLatinCommand);
+        ROT13Cipher rot13Cipher = new ROT13Cipher("ROT13 cipher", false, rot13Command);
         runtimes.Add(userInterface);
+        runtimes.Add(link);
         runtimes.Add(pigLatin);
         runtimes.Add(rot13Cipher);
+
+        pullClassCommands(link);
+
+        Log.DisplayStartupString(link.PossibleCommands);
 
         while (hasWork)
         {
             runtimes.ForEach(runtime =>
             {
-                bool complete = runtime.GetStatus() == 1 ? runtime.RuntimeMain(communalMemory) : true;
+                _ = runtime.GetStatus() == 1 ? runtime.RuntimeMain(communalMemory) : true;
             });
 
             hasWork = runtimes.Any(runtime => runtime.GetStatus() == 1);
         }
 
-        DisplayExitString();
+        Log.DisplayExitString();
     }
 
-    public static void DisplayStartupString()
+    private static void pullClassCommands(Link link)
     {
-        Console.BackgroundColor = ConsoleColor.White;
-        Console.ForegroundColor = ConsoleColor.DarkBlue;
-        Log.Out("Enter a sentence and follow it with flags to translate or encode it.");
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Log.Out("!p will translate to pig latin.");
-        Log.Out("!rot13 will encrypt in ROT13 formation.");
-        Console.ForegroundColor = ConsoleColor.Black;
-        Log.Out("Example: My name is Eric Dee !p !rot13 translates and encrypts the sentence.");
-        Console.ResetColor();
-    }
-
-    public static void DisplayExitString()
-    {
-        Console.BackgroundColor = ConsoleColor.Red;
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("Press the enter key to end the application.");
-        Console.ResetColor();
-        Console.Read();
+        runtimes.ForEach(runtime =>
+        {
+            char[]? addedCommand;
+            Action? compatibility = runtime.GetCommandCompatibility(out addedCommand);
+            if (addedCommand != null)
+            {
+                link.AddKey(addedCommand, compatibility);
+            }
+        });
     }
 }

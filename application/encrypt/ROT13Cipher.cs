@@ -1,5 +1,5 @@
 ﻿using Abstract;
-using Applications;
+using Application;
 using Singular;
 
 namespace Encryption
@@ -8,8 +8,8 @@ namespace Encryption
     {
         private List<byte> cipherValue;
 
-        public ROT13Cipher(string name, bool isRunning)
-            : base(name, isRunning)
+        public ROT13Cipher(string name, bool isRunning, char[]? command = null)
+            : base(name, isRunning, command)
         {
             this.cipherValue = new List<byte>();
         }
